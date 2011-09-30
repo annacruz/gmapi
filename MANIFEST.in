@@ -1,0 +1,3 @@
+recursive-include gmapi/media *.js
+include AUTHORS
+include LICENSE

@@ -1,0 +1,52 @@
+=========================================================
+Google Maps API v3 and Static Maps API helper app.
+=========================================================
+
+
+This app allows you to define Google Map and Marker objects in Python.
+
+These objects are designed to be serialized to JSON and parsed by the included
+jQuery plugin which converts them to actual Google Map and Marker instances.
+
+They can also be serialized to strings which produces a Static Maps url.
+
+This way you can easily use unobtrusive javascript techniques along with maps.
+
+This project is being developed as one piece of a larger project I'm working
+on. So functionality will be added as I need it. In particular, the jQuery
+plugin will probably see some added functionality.
+
+Version 3 of the Google Geocoding Web service is also implemented to further
+enable an unobtrusive javascript approach.
+
+New: Events and Info Windows
+You can now add info windows maps and markers and add event listeners.
+Adding to the example below, in your views.py (right after "gmap =
+maps.Map...") add:
+
+    marker = maps.Marker(opts = {
+        'map': gmap,
+        'position': maps.LatLng(38, -97),
+    })
+    maps.event.addListener(marker, 'mouseover', 'myobj.markerOver')
+    maps.event.addListener(marker, 'mouseout', 'myobj.markerOut')
+    info = maps.InfoWindow({
+        'content': 'Hello!',
+        'disableAutoPan': True
+    })
+    info.open(gmap, marker)
+
+Then, on your page:
+
+<script type="text/javascript">
+    window.myobj = {
+        markerOver: function() { this.openInfoWindow(); },
+        markerOut: function() { this.closeInfoWindow(); }
+    };
+</script>
+
+That's it!
+
+
+Example:
+
