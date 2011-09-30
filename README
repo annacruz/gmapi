@@ -12,10 +12,6 @@ They can also be serialized to strings which produces a Static Maps url.
 
 This way you can easily use unobtrusive javascript techniques along with maps.
 
-This project is being developed as one piece of a larger project I'm working
-on. So functionality will be added as I need it. In particular, the jQuery
-plugin will probably see some added functionality.
-
 Version 3 of the Google Geocoding Web service is also implemented to further
 enable an unobtrusive javascript approach.
 
