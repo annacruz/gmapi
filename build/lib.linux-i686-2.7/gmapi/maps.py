@@ -1,10 +1,11 @@
 """Implements the Google Maps API v3."""
 import time
 import urllib
-import json
 import gmapi.settings as settings
+from json import loads
+from gmapi.utils.cache import cache
 from gmapi.utils.http import urlencode
-
+from gmapi.utils.encoding import force_unicode, smart_str
 
 STATIC_URL = getattr(settings, 'GMAPI_STATIC_URL',
                      'http://maps.google.com/maps/api/staticmap')
@@ -26,14 +27,16 @@ class MapClass(dict):
         if 'arg' in self:
             if item in self._getopts:
                 key = self._getopts[item]
+
                 def func():
                     return self['arg'].get('opts', {}).get(key)
                 return func
             if item in self._setopts:
                 key = self._setopts[item]
-                def func(value):
-                    # Call setOptions so that it can be overridden.
-                    self.setOptions({key: value})
+
+#                def func(value):
+#                    # Call setOptions so that it can be overridden.
+#                    self.setOptions({key: value})
                 return func
         raise AttributeError, item
 
