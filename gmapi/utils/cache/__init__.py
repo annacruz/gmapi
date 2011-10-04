@@ -14,22 +14,11 @@ cache class.
 
 See docs/topics/cache.txt for information on the public API.
 """
-import settings
+from gmapi.utils import settings
+from gmapi.utils import signals
 
-try:
-    # The mod_python version is more efficient, so try importing it first.
-    from mod_python.util import parse_qsl
-except ImportError:
-    try:
-        # Python 2.6 and greater
-        from urlparse import parse_qsl
-    except ImportError:
-        # Python 2.5.  Works on Python 2.6 but raises PendingDeprecationWarning
-        from cgi import parse_qsl
+import importlib
 
-__all__ = [
-    'get_cache', 'cache', 'DEFAULT_CACHE_ALIAS'
-]
 
 # Name for use in settings file --> name of module in "backends" directory.
 # Any backend scheme that is not in this dictionary is treated as a Python
@@ -46,12 +35,12 @@ DEFAULT_CACHE_ALIAS = 'default'
 
 
 class ImproperlyConfigured(Exception):
-33	    "Ops! Some configuration are wrong!!!"
-34	    pass
+    "Ops! Some configuration are wrong!!!"
+    pass
 
 
 class InvalidCacheBackendError(ImproperlyConfigured):
-10	    pass
+    pass
 
 
 def parse_backend_uri(backend_uri):
@@ -96,11 +85,6 @@ if not settings.CACHES:
 
     # Mapping for new-style cache backend api
     backend_classes = {
-        'memcached': 'memcached.CacheClass',
-        'locmem': 'locmem.LocMemCache',
-        'file': 'filebased.FileBasedCache',
-        'db': 'db.DatabaseCache',
-        'dummy': 'dummy.DummyCache',
     }
     engine, host, params = parse_backend_uri(settings.CACHE_BACKEND)
     if engine in backend_classes:

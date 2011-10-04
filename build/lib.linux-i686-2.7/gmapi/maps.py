@@ -1,9 +1,5 @@
 """Implements the Google Maps API v3."""
-import time
-import urllib
-import gmapi.settings as settings
-from json import loads
-from gmapi.utils.cache import cache
+import gmapi.utils.settings as settings
 from gmapi.utils.http import urlencode
 from gmapi.utils.encoding import force_unicode, smart_str
 
@@ -479,46 +475,46 @@ class Geocoder(object):
                 request['sensor'] = 'true' if request['sensor'] else 'false'
         else:
             request['sensor'] = 'false'
-        cache_key = urlencode(request)
-        url = '%s/json?%s' % (GEOCODE_URL, cache_key)
-        # Try up to 30 times if over query limit.
-        for _ in xrange(30):
-            # Check if result is already cached.
-            data = cache.get(cache_key)
-            if data is None:
-                if (max(0, time.time() - self.__class__._last) <
-                    self.__class__._sleep):
-                    # Wait a bit so that we don't make requests too fast.
-                    time.sleep(max(0, self.__class__._sleep +
-                                      self.__class__._last - time.time()))
-                data = urllib.urlopen(url).read()
-                self.__class__._last = time.time()
-            response = loads(data)
-            status = response['status']
-
-            if status == 'OVER_QUERY_LIMIT':
-                # Over limit, increase delay a bit.
-                if self.__class__._block:
-                    break
-                self.__class__._sleep += .1
-            else:
-                # Save results to cache.
-                cache.set(cache_key, data)
-                if status == 'OK':
-                    # Successful query, clear block if there is one.
-                    if self.__class__._block:
-                        self.__class__._block = False
-                        self.__class__._sleep = 0
-                    results = _parseGeocoderResult(response['results'])
-                    if callback:
-                        callback(results, status)
-                    return results, status
-                else:
-                    return None, status
-        self.__class__._block = True
-        raise SystemError('Geocoding has failed too many times. '
-                          'You might have exceeded your daily limit.')
-
+#        cache_key = urlencode(request)
+#        url = '%s/json?%s' % (GEOCODE_URL, cache_key)
+#        # Try up to 30 times if over query limit.
+#        for _ in xrange(30):
+#            # Check if result is already cached.
+#            data = cache.get(cache_key)
+#            if data is None:
+#                if (max(0, time.time() - self.__class__._last) <
+#                    self.__class__._sleep):
+#                    # Wait a bit so that we don't make requests too fast.
+#                    time.sleep(max(0, self.__class__._sleep +
+#                                      self.__class__._last - time.time()))
+#                data = urllib.urlopen(url).read()
+#                self.__class__._last = time.time()
+#            response = loads(data)
+#            status = response['status']
+#
+#            if status == 'OVER_QUERY_LIMIT':
+#                # Over limit, increase delay a bit.
+#                if self.__class__._block:
+#                    break
+#                self.__class__._sleep += .1
+#            else:
+#                # Save results to cache.
+#                cache.set(cache_key, data)
+#                if status == 'OK':
+#                    # Successful query, clear block if there is one.
+#                    if self.__class__._block:
+#                        self.__class__._block = False
+#                        self.__class__._sleep = 0
+#                    results = _parseGeocoderResult(response['results'])
+#                    if callback:
+#                        callback(results, status)
+#                    return results, status
+#                else:
+#                    return None, status
+#        self.__class__._block = True
+#        raise SystemError('Geocoding has failed too many times. '
+#                          'You might have exceeded your daily limit.')
+#
 
 def _parseGeocoderResult(result):
     """ Parse Geocoder Results.
