@@ -2,6 +2,8 @@
 Google Maps API v3 and Static Maps API helper app.
 =========================================================
 
+#TODO include Examples
+
 
 This app allows you to define Google Map and Marker objects in Python.
 
@@ -42,7 +44,3 @@ Then, on your page:
 </script>
 
 That's it!
-
-
-Example:
-

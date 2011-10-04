@@ -24,22 +24,13 @@ for dirpath, dirnames, filenames in os.walk('gmapi'):
             data_files.append(os.path.join(prefix, f))
 
 
-setup(name='django-gmapi',
-      version='1.0.1',
-      description='A Google Maps API implementation for Django',
-      author='David Bennett',
-      author_email='ungenio@gmail.com',
-      url='http://code.google.com/p/django-gmapi/',
+setup(name='gmapi',
+      version='0.1',
+      description='A Google Maps API implementation',
+      author='Anna Cruz',
+      author_email='anna.cruz@gmail.com',
+      url='',
       packages=packages,
       package_data={'gmapi': data_files},
-      classifiers=['Development Status :: 4 - Beta',
-                   'Environment :: Web Environment',
-                   'Framework :: Django',
-                   'Intended Audience :: Developers',
-                   'License :: OSI Approved :: MIT License',
-                   'Operating System :: OS Independent',
-                   'Programming Language :: Python',
-                   'Topic :: Software Development :: '
-                   'Libraries :: Python Modules',
-                   'Topic :: Utilities'],
+      classifiers=[],
       )
